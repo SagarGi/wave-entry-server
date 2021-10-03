@@ -61,6 +61,13 @@ router.post('/delete/:id', async (req,res) =>{
 })
 
 // read user
+router.get('/home', async (req,res) =>{
+    const allUsers = await User.find();
+    res.send(allUsers);
+    
+})
+
+
 
 router.get('/update/:id', async (req,res) =>{
     // var id = req.params.id;
