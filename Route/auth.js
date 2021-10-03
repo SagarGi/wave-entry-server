@@ -45,6 +45,53 @@ router.post('/register', async (req,res) => {
     }
 })
 
+// delete user
+router.post('/delete/:id', async (req,res) =>{
+    var id = req.params.id;
+    // console.log(id);
+    User.findOneAndRemove({_id:id}, (error) => {
+        if(error)
+        {
+            return res.status(400).json({error:"Error occured!!!"});
+
+        }
+        return res.status(200).json({error:"Data Delete Successfull!!"});
+        
+    })
+})
+
+// read user
+
+router.get('/update/:id', async (req,res) =>{
+    // var id = req.params.id;
+    console.log(id);
+    const userDetails = await User.findOne({_id:id});
+    // console.log(userDetails);
+    
+})
+
+// update user
+
+router.post('/update/:id', async (req,res) => {
+    var id = req.params.id;
+    const {name,email,phone,address,destination,qualification,percentage} =req.body;
+
+    await User.updateOne({_id:id},{name:name, email:email, phone:phone, address:address, destination:destination, qualification:qualification
+    ,percentage:percentage},(err,result) =>{
+        if(err){
+            return res.status(400).json({error:"Error occured while updating!!"});
+        }else{
+            console.log("update successfull !!");
+            return res.status(400).json({error:"Update successfull!!"});
+
+            
+        }});
+
+    console.log(updatedValue);
+   
+
+})
+
 //login route
 
 router.post('/', async (req,res) => {
