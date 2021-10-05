@@ -14,40 +14,41 @@ const LoginUser = require('../Model/AdminSchema');
 router.post("/register", async (req,res) => {
     console.log(req.body);
     
-    // const {name,address,destination,qualification,
-    //     ielts,phone,email,percentage,listening,reading,writing,speaking,overallband} = req.body;
-    // //  validation
+    const {name,address,destination,qualification,
+        ielts,phone,email,percentage,listening,reading,writing,speaking,overallband} = req.body;
+    //  validation
 
-    // console.log(name + address)
-    // if(!name || !email || !phone || !destination || !qualification || !address || !percentage)
-    // {
-    //     return res.status(422).json({error: "Please Fill the filed properly!!"});
+    console.log(name + " " + address);
+    
+    if(!name || !email || !phone || !destination || !qualification || !address || !percentage)
+    {
+        return res.status(422).json({error: "Please Fill the filed properly!!"});
 
-    // }
+    }
 
-    // try {
+    try {
 
-    //    const userExist = await User.findOne({email:email});
+       const userExist = await User.findOne({email:email});
 
-    //     if(userExist)
-    //     {
-    //         return res.status(422).json({error: "You Are Already Registered!!!"});
+        if(userExist)
+        {
+            return res.status(422).json({error: "You Are Already Registered!!!"});
             
-    //     }
+        }
 
-    //     const user = new User({name,address,destination,qualification,
-    //         ielts,phone,email,percentage,listening,reading,writing,speaking,overallband});
+        const user = new User({name,address,destination,qualification,
+            ielts,phone,email,percentage,listening,reading,writing,speaking,overallband});
 
-    //     const userRegister = await user.save();
-    //     if(userRegister)
-    //     {
-    //         res.status(201).json({message: "user registration successfull!!"});
+        const userRegister = await user.save();
+        if(userRegister)
+        {
+            res.status(201).json({message: "user registration successfull!!"});
 
-    //     }
+        }
         
-    // } catch (error) {
-    //     console.log(error);
-    // }
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 // delete user
