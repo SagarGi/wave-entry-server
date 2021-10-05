@@ -26,7 +26,37 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     percentage:{
-        type : Number,
+        type : String,
+        required: true,
+    }
+    ,
+    ielts:{
+        type : String,
+        required: true,
+    }
+    ,
+    reading:{
+        type : String,
+        required: true,
+    }
+    ,
+    writing:{
+        type : String,
+        required: true,
+    }
+    ,
+    listening:{
+        type : String,
+        required: true,
+    }
+    ,
+    speaking:{
+        type : String,
+        required: true,
+    }
+    ,
+    overallband:{
+        type : String,
         required: true,
     }
 

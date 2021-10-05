@@ -10,39 +10,44 @@ const LoginUser = require('../Model/AdminSchema');
 //     res.send("hello world from the server!!");
 // })
 
-router.post('/register', async (req,res) => {
+//register api
+router.post("/register", async (req,res) => {
     console.log(req.body);
-    // res.json({message : req.body});
-    const {name, email, phone, destination, qualification, address, percentage} = req.body;
-    //  validation
-    if(!name || !email || !phone || !destination || !qualification || !address || !percentage)
-    {
-        return res.status(422).json({error: "Please Fill the filed properly!!"});
+    
+    // const {name,address,destination,qualification,
+    //     ielts,phone,email,percentage,listening,reading,writing,speaking,overallband} = req.body;
+    // //  validation
 
-    }
+    // console.log(name + address)
+    // if(!name || !email || !phone || !destination || !qualification || !address || !percentage)
+    // {
+    //     return res.status(422).json({error: "Please Fill the filed properly!!"});
 
-    try {
+    // }
 
-       const userExist = await User.findOne({email:email});
+    // try {
 
-        if(userExist)
-        {
-            return res.status(422).json({error: "You Are Already Registered!!!"});
+    //    const userExist = await User.findOne({email:email});
+
+    //     if(userExist)
+    //     {
+    //         return res.status(422).json({error: "You Are Already Registered!!!"});
             
-        }
+    //     }
 
-        const user = new User({name, email, phone, destination, qualification, address, percentage});
+    //     const user = new User({name,address,destination,qualification,
+    //         ielts,phone,email,percentage,listening,reading,writing,speaking,overallband});
 
-        const userRegister = await user.save();
-        if(userRegister)
-        {
-            res.status(201).json({message: "user registration successfull!!"});
+    //     const userRegister = await user.save();
+    //     if(userRegister)
+    //     {
+    //         res.status(201).json({message: "user registration successfull!!"});
 
-        }
+    //     }
         
-    } catch (error) {
-        console.log(error);
-    }
+    // } catch (error) {
+    //     console.log(error);
+    // }
 })
 
 // delete user
@@ -64,7 +69,7 @@ router.post('/delete/:id', async (req,res) =>{
 router.get('/home', async (req,res) =>{
     const allUsers = await User.find();
     res.send(allUsers);
-    
+
 })
 
 
