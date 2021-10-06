@@ -37,27 +37,27 @@ const userSchema = new mongoose.Schema({
     ,
     reading:{
         type : String,
-        required: true,
+       
     }
     ,
     writing:{
         type : String,
-        required: true,
+       
     }
     ,
     listening:{
         type : String,
-        required: true,
+        
     }
     ,
     speaking:{
         type : String,
-        required: true,
+        
     }
     ,
     overallband:{
         type : String,
-        required: true,
+        
     }
 
 })

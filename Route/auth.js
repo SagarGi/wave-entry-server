@@ -70,14 +70,21 @@ router.post('/delete/:id', async (req,res) =>{
 router.get('/home', async (req,res) =>{
     const allUsers = await User.find();
     res.send(allUsers);
+    
 
+})
+
+router.get('/viewdetails/:id', async(req,res) =>{
+   console.log(req.params.id);
+    const yourDetails = await User.findOne({_id:req.params.id});
+    res.send(yourDetails);
 })
 
 
 
 router.get('/update/:id', async (req,res) =>{
     // var id = req.params.id;
-    console.log(id);
+    
     const userDetails = await User.findOne({_id:id});
     // console.log(userDetails);
     
