@@ -75,7 +75,7 @@ router.get('/home', async (req,res) =>{
 })
 
 router.get('/viewdetails/:id', async(req,res) =>{
-   console.log(req.params.id);
+//    console.log(req.params.id);
     const yourDetails = await User.findOne({_id:req.params.id});
     res.send(yourDetails);
 })
@@ -83,9 +83,10 @@ router.get('/viewdetails/:id', async(req,res) =>{
 
 
 router.get('/update/:id', async (req,res) =>{
-    // var id = req.params.id;
+    var id = req.params.id;
     
     const userDetails = await User.findOne({_id:id});
+    res.send(userDetails)
     // console.log(userDetails);
     
 })
@@ -94,20 +95,13 @@ router.get('/update/:id', async (req,res) =>{
 
 router.post('/update/:id', async (req,res) => {
     var id = req.params.id;
-    const {name,email,phone,address,destination,qualification,percentage} =req.body;
+    console.log(id);
+    const {name,email,phone,address,destination,qualification,percentage,ielts,listening,reading,writing,speaking,overallband} =req.body;
 
     await User.updateOne({_id:id},{name:name, email:email, phone:phone, address:address, destination:destination, qualification:qualification
-    ,percentage:percentage},(err,result) =>{
-        if(err){
-            return res.status(400).json({error:"Error occured while updating!!"});
-        }else{
-            console.log("update successfull !!");
-            return res.status(400).json({error:"Update successfull!!"});
+    ,percentage:percentage,ielts:ielts,writing:writing,speaking:speaking,listening:listening,overallband:overallband,reading:reading});
 
-            
-        }});
-
-    console.log(updatedValue);
+    // console.log("updated value in server console:" + updatedValue);
    
 
 })
