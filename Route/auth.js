@@ -112,16 +112,9 @@ router.post('/', async (req,res) => {
     // console.log(req.body);
     try {
         const {username, password} =req.body;
-
-        if(!username || !password)
-        {
-            return res.status(400).json({error:"Please fill the data!!"});
-
-        }
-
         const userLogin = await LoginUser.findOne({username:username});
-        console.log(userLogin);
-
+        res.send(userLogin);
+        
         
     } catch (error) {
         console.log(error);
