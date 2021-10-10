@@ -52,7 +52,7 @@ router.post("/register", async (req,res) => {
 })
 
 // delete user
-router.post('/delete/:id', async (req,res) =>{
+router.get('/delete/:id', async (req,res) =>{
     var id = req.params.id;
     // console.log(id);
     User.findOneAndRemove({_id:id}, (error) => {
