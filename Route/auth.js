@@ -125,32 +125,29 @@ router.post('/', async (req,res) => {
 
 
 //change login credential
-router.post('/changelogin', async (req,res) => {
+router.post('/changesetting', async (req,res) => {
     try {
-        const {username, password,user_id} =req.body;
-
-        if(!username || !password)
-        {
-            return res.status(400).json({error:"Please fill the data!!"});
-
-        }
+        const {newUsername, newPassword,user_id} =req.body;
+        
         const checkuser_id = await LoginUser.findOne({user_id:user_id});
+
         console.log("data from change login\n" + checkuser_id);
+       
         
         if(checkuser_id)
         {
-            LoginUser.updateOne({user_id:checkuser_id.user_id},{password:password, username:username}, (err,result) =>{
+            LoginUser.updateOne({user_id:checkuser_id.user_id},{password:newPassword, username:newUsername}, (err,result) =>{
                 if(err){
-                    return res.status(400).json({error:"Error occured while updating!!"});
+                    return res.status(400).json({response:"Error occured while updating!!"});
                 }else{
                     console.log("Password update successfull !!");
-                    return res.status(400).json({error:"Update successfull!!"});
+                    return res.status(400).json({response:"Update successfull!!"});
     
                     
                 }
             })
         }else{
-            return res.status(400).json({error:"User_id Doesnot exist!!"});
+            return res.status(422).json({response:"User_id Doesnot exist!!"});
 
         }
      
