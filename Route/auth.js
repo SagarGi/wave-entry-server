@@ -55,7 +55,7 @@ router.post("/register", async (req,res) => {
 router.get('/delete/:id', async (req,res) =>{
     var id = req.params.id;
     // console.log(id);
-    User.findOneAndRemove({_id:id}, (error) => {
+    await User.findOneAndRemove({_id:id}, (error) => {
         if(error)
         {
             return res.status(400).json({error:"Error occured!!!"});
@@ -112,8 +112,15 @@ router.post('/', async (req,res) => {
     // console.log(req.body);
     try {
         const {username, password} =req.body;
-        const userLogin = await LoginUser.findOne({username:username});
-        res.send(userLogin);
+        const loginDetails = await LoginUser.findOne({username:username ,password:password})
+        if(loginDetails){
+            res.json({status: 201});
+        }else
+        {
+            return res.status(400).json({error:"Login Credential Did Not Match !!!"});
+        }
+          
+        // res.send(userLogin);
         
         
     } catch (error) {
