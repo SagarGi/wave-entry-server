@@ -18,7 +18,6 @@ require('./Database/DatabaseConnection')
 app.use(express.json());
 
 app.use(require('./Route/auth'));
-
 const port = process.env.PORT;
 
 

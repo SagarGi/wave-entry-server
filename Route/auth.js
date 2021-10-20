@@ -16,15 +16,7 @@ router.post("/register", async (req,res) => {
     
     const {name,address,destination,qualification,
         ielts,phone,email,percentage,listening,reading,writing,speaking,overallband} = req.body;
-    //  validation
-
-    console.log(name + " " + address);
     
-    if(!name || !email || !phone || !destination || !qualification || !address || !percentage)
-    {
-        return res.status(422).json({error: "Please Fill the filed properly!!"});
-
-    }
 
     try {
 
@@ -32,7 +24,8 @@ router.post("/register", async (req,res) => {
 
         if(userExist)
         {
-            return res.status(422).json({error: "You Are Already Registered!!!"});
+            res.json({status: 201});
+            // return res.status(422).json({error: "Email Already Exist Cannot Register!!!"});
             
         }
 
@@ -42,7 +35,7 @@ router.post("/register", async (req,res) => {
         const userRegister = await user.save();
         if(userRegister)
         {
-            res.status(201).json({message: "user registration successfull!!"});
+            res.status(200).json({message: "user registration successfull!!"});
 
         }
         
