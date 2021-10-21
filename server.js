@@ -18,13 +18,13 @@ require('./Database/DatabaseConnection')
 app.use(express.json());
 
 app.use(require('./Route/auth'));
-const port = process.env.PORT;
+const port = 3001;
 
 
 
 
 // console.log("Nodemon is working!!
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log("Server is running at 3001!!")
 })
 
