@@ -1,0 +1,26 @@
+{
+  "name": "wave-entry-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server": "nodemon server.js --ignore client",
+    "heroku-postbuild": "npm run build"
+  },
+  "engines": {
+    "npm": "5.6.0",
+    "node": "8.10.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.8",
+    "nodemon": "^2.0.14"
+  }
+}
