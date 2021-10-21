@@ -126,6 +126,10 @@ router.post('/', async (req,res) => {
 
 })
 
+router.post('/', (req,res) => {
+    res.send("hello i am Server");
+})
+
 
 
 //change login credential
