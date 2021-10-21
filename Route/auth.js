@@ -35,7 +35,7 @@ router.post("/register", async (req,res) => {
         const userRegister = await user.save();
         if(userRegister)
         {
-            res.status(200).json({message: "user registration successfull!!"});
+            res.status(200).json({message: "User Registration Successfull!!"});
 
         }
         
@@ -48,15 +48,10 @@ router.post("/register", async (req,res) => {
 router.get('/delete/:id', async (req,res) =>{
     var id = req.params.id;
     // console.log(id);
-    await User.findOneAndRemove({_id:id}, (error) => {
-        if(error)
-        {
-            return res.status(400).json({error:"Error occured!!!"});
-
-        }
-        return res.status(200).json({error:"Data Delete Successfull!!"});
-        
-    })
+    await User.findOneAndRemove({_id:id});
+    res.send({message:"Delete User Successfull"});
+    
+    
 })
 
 // read user
@@ -91,8 +86,17 @@ router.post('/update/:id', async (req,res) => {
     console.log(id);
     const {name,email,phone,address,destination,qualification,percentage,ielts,listening,reading,writing,speaking,overallband} =req.body;
 
-    await User.updateOne({_id:id},{name:name, email:email, phone:phone, address:address, destination:destination, qualification:qualification
-    ,percentage:percentage,ielts:ielts,writing:writing,speaking:speaking,listening:listening,overallband:overallband,reading:reading});
+    try {
+        await User.updateOne({_id:id},{name:name, email:email, phone:phone, address:address, destination:destination, qualification:qualification
+            ,percentage:percentage,ielts:ielts,writing:writing,speaking:speaking,listening:listening,overallband:overallband,reading:reading});
+            return res.status(200).json({message: "User Update Successfull"});
+        
+    } catch (error) {
+
+        return  res.json({status: 201});
+
+    }
+   
 
     // console.log("updated value in server console:" + updatedValue);
    
@@ -138,16 +142,16 @@ router.post('/changesetting', async (req,res) => {
         {
             LoginUser.updateOne({user_id:checkuser_id.user_id},{password:newPassword, username:newUsername}, (err,result) =>{
                 if(err){
-                    return res.status(400).json({response:"Error occured while updating!!"});
+                    return res.json({response:"Error occured while updating!!",status:400});
                 }else{
                     console.log("Password update successfull !!");
-                    return res.status(400).json({response:"Update successfull!!"});
+                    return res.json({response:"Update successfull!!",status:200});
     
                     
                 }
             })
         }else{
-            return res.status(422).json({response:"User_id Doesnot exist!!"});
+            return res.json({response:"User_id Doesnot exist!!",status:401});
 
         }
      
