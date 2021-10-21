@@ -135,7 +135,7 @@ router.post('/changesetting', async (req,res) => {
         
         const checkuser_id = await LoginUser.findOne({user_id:user_id});
 
-        console.log("data from change login\n" + checkuser_id);
+        // console.log("data from change login\n" + checkuser_id);
        
         
         if(checkuser_id)
