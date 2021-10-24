@@ -1,4 +1,6 @@
 const express = require('express');
+const bcrypt = require("bcrypt");
+
 
 const router = express.Router();
 
@@ -109,9 +111,19 @@ router.post('/', async (req,res) => {
     // console.log(req.body);
     try {
         const {username, password} =req.body;
-        const loginDetails = await LoginUser.findOne({username:username ,password:password})
+        const loginDetails = await LoginUser.findOne({username:username})
         if(loginDetails){
+            console.log("yes")
+            const validPassword = await bcrypt.compare(password, loginDetails.password);
+            if(validPassword){
+            // return res.status(400).json({error:"Password Matched!!!"});
             res.json({status: 201});
+            }else{
+            return res.status(400).json({error:"Password did not match Matched!!!"});
+
+            }
+
+            // res.json({status: 201});
         }else
         {
             return res.status(400).json({error:"Login Credential Did Not Match !!!"});
@@ -122,10 +134,13 @@ router.post('/', async (req,res) => {
         
     } catch (error) {
         console.log(error);
+        return res.status(400).json({error:"Try Catch Error !!!"});
     }
 
 })
 
+
+// for server test
 router.post('/', (req,res) => {
     res.send("hello i am Server");
 })
@@ -138,20 +153,26 @@ router.post('/changesetting', async (req,res) => {
         const {newUsername, newPassword,user_id} =req.body;
         
         const checkuser_id = await LoginUser.findOne({user_id:user_id});
-
+        
         // console.log("data from change login\n" + checkuser_id);
-       
+        
         
         if(checkuser_id)
         {
-            LoginUser.updateOne({user_id:checkuser_id.user_id},{password:newPassword, username:newUsername}, (err,result) =>{
+            // if user is available then only hash the password!!!
+
+             // generate salt to hash password
+             const salt = await bcrypt.genSalt(10);
+
+             const databasenewPassword = await bcrypt.hash(newPassword, salt);
+             console.log(databasenewPassword);
+            LoginUser.updateOne({user_id:checkuser_id.user_id},{password:databasenewPassword, username:newUsername}, (err,result) =>{
                 if(err){
                     return res.json({response:"Error occured while updating!!",status:400});
                 }else{
                     console.log("Password update successfull !!");
                     return res.json({response:"Update successfull!!",status:200});
-    
-                    
+
                 }
             })
         }else{
