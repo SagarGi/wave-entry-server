@@ -2,6 +2,12 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../Model/AdminSchema");
 
 module.exports = async (req, res, next) => {
+  const url = req.url;
+  // do not check for auth for login endpoint
+  if (url === "/login") {
+    return next();
+  }
+
   try {
     const [type, token] = req.headers.authorization.split(" ");
 
