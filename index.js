@@ -9,7 +9,7 @@ dotenv.config({ path: path.join(__dirname, ".env") });
 const app = express();
 
 // db connection
-require("./Database/connection");
+require("./Database/connection")();
 
 // enable cors with default config
 app.use(cors());
