@@ -30,6 +30,7 @@ module.exports = async (req, res, next) => {
       if (!admin) {
         return res.status(401).json({ error: "Unauthorized" });
       }
+      req.user = payload.username;
     }
     return next();
   } catch {

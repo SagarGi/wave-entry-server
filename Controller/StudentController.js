@@ -56,7 +56,7 @@ const create = async (req, res) => {
   }
 };
 
-const update = async () => {
+const update = async (req, res) => {
   const id = req.params.id;
   console.log(id);
   const {
@@ -109,7 +109,7 @@ const remove = async (req, res) => {
       return res.status(400).json({ error: "Bad Request" });
     }
 
-    return res.send({ message: "Delete Student Successfull" });
+    return res.status(200).send({ message: "Delete Student Successfull" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Something wrong in the server" });

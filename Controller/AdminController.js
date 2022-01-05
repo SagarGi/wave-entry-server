@@ -46,9 +46,10 @@ const remove = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const admin = await Admin.findOne({ username: username });
+    const admin = await Admin.findOne({ username: req.user });
 
     if (admin) {
+      admin.username = username;
       admin.setPassword(password);
       const result = await admin.save();
 
