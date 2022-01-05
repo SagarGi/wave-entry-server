@@ -1,31 +1,24 @@
-const dotenv = require('dotenv')
-const mongoose = require('mongoose')
+const dotenv = require("dotenv");
+const path = require("path");
+const express = require("express");
+const cors = require("cors");
 
-const express = require('express');
+// load env from .env
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
- res.header('Access-Control-Allow-Headers', 'Content-Type');
- res.header('Access-Control-Allow-Methods','GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    next();
-  });
+// db connection
+require("./Database/connection");
 
-dotenv.config({path:'./config.env'});
+// enable cors with default config
+app.use(cors());
 
-require('./Database/DatabaseConnection')
 app.use(express.json());
+// routes
+require("./Route")(app);
 
-app.use(require('./Route/auth'));
-const port = process.env.PORT || 3001;
-
-
-
-
-// console.log("Nodemon is working!!
+const port = process.env.SERVER_PORT || 3001;
 app.listen(port, () => {
-    console.log("Server is running at 3001!!")
-})
-
-
+  console.log(`Server is running at port: ${port}`);
+});
