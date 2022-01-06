@@ -1,20 +1,30 @@
-const mongoose  = require("mongoose");
-const loginSchema = new mongoose.Schema({
-    user_id :{
-        type : String,
-        required: true,
-    },
-    username:{
-        type : String,
-        required: true,
+const mongoose = require("mongoose");
+const { hashPassword, generateSalt } = require("../lib/hash");
 
-    },
-    password :{
-        type : String,
-        required: true,
-    }
+const AdminSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+  },
+  salt: {
+    type: String,
+  },
+});
 
-})
+// arrow function will not work here
+AdminSchema.methods.setPassword = function (password) {
+  this.salt = generateSalt();
+  this.password = hashPassword(password, this.salt);
+};
 
-const LoginUser = mongoose.model('LOGINCREDENTIAL', loginSchema);
-module.exports = LoginUser; 
+// arrow function will not work here
+AdminSchema.methods.verify = function (password) {
+  passwordHash = hashPassword(password, this.salt);
+  return this.password === passwordHash;
+};
+
+const Admin = mongoose.model("Admin", AdminSchema);
+module.exports = Admin;
