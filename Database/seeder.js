@@ -11,17 +11,20 @@ const admin = new Admin();
 admin.username = "admin";
 admin.setPassword("admin");
 
-conn().then(() => {
+conn().then(async () => {
   console.log("Start seeding...");
-  Admin.collection.drop().then(() => {
-    admin.save((error, result) => {
-      if (error) {
-        console.error("Cannot seed data");
-        console.error(error);
-        return;
-      }
-      console.log("Seeding successful");
-      mongoose.connection.close();
-    });
+  try {
+    await Admin.collection.drop();
+  } catch (error) {
+    console.log("Collection doesn't exist");
+  }
+  await admin.save((error, result) => {
+    if (error) {
+      console.error("Cannot seed data");
+      console.error(error);
+      return;
+    }
+    console.log("Seeding successful");
+    mongoose.connection.close();
   });
 });
