@@ -1,6 +1,6 @@
 FROM node:14
 
-WORKDIR /app/wave-entry-server
+WORKDIR /app/waveentry/server
 
 COPY . .
 
