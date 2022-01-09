@@ -25,6 +25,6 @@ conn().then(async () => {
       return;
     }
     console.log("Seeding successful");
-    mongoose.connection.close();
+    // mongoose.connection.close();
   });
 });

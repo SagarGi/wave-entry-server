@@ -1,64 +1,64 @@
 # services:
-#   mongodatabase:
+#   mongodb:
 #     image: mongo
-#     # container_name: mongo
-#     ports:
-#       - "27018:27017"
+#     restart: always
 
-#   waveentry-backend:
-#     image: wave-entry-server
-#     # container_name: backend
+#   backend:
+#     image: waveentry-server
 #     environment:
-#       - DB_HOST=mongodatabase
-#       - DB_PORT=27018
-#       - DB_NAME=waveentrydatabase
-#       - SERVER_PORT=3001 # donot use 3000 here because 3000 will be used for ui
+#       - DB_HOST=mongodb
+#       - DB_NAME=wavedb
+#       - SERVER_PORT=3001
 #       - JWT_SECRET=abcd1234
 #     ports:
-#       - 3001:3001
-#     command:
-#       - npm run db:seed
+#       - "3001:3001"
 #     depends_on:
-#       - mongodatabase
+#       - mongodb
 
-#   waveentry-frontend:
-#     image: waveentry
-#     ports:
-#       - 3000:3000 # 3000 is exposed from the image dockerfile
+#   seeder:
+#     image: waveentry-server
 #     environment:
-#       - REACT_APP_SERVER_URL=http://waveentry-backend:3001
+#       - DB_HOST=mongodb
+#       - DB_NAME=wavedb
+#       - SERVER_PORT=3001
+#       - JWT_SECRET=abcd1234
+#     command: npm run db:seed
 #     depends_on:
-#       - mongodatabase
-#       - waveentry-backend
+#       - mongodb
+#       - backend
+
+#   frontend:
+#     image: waveentry-web
+#     environment:
+#       - REACT_APP_SERVER_URL=http://0.0.0.0:3000
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - mongodb
+#       - backend
+#       - seeder
 
 services:
-  mongodb:
-    image: mongo
-    restart: always
-
   backend:
     image: waveentry-server
+    build: .
     environment:
       - DB_HOST=mongodb
       - DB_NAME=wavedb
       - SERVER_PORT=3001
       - JWT_SECRET=abcd1234
+      - DB_PORT=27017
     ports:
       - "3001:3001"
     depends_on:
       - mongodb
 
-  seeder:
-    image: waveentry-server
-    environment:
-      - DB_HOST=mongodb
-      - DB_NAME=wavedb
-      - SERVER_PORT=3001
-      - JWT_SECRET=abcd1234
-    command: npm run db:seed
-    depends_on:
-      - mongodb
-      - backend
+  mongodb:
+    image: mongo
+    restart: always
+    # giving port is optional
+    ports:
+      - "27017:27017"
 
   frontend:
     image: waveentry-web
@@ -67,6 +67,4 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - mongodb
       - backend
-      - seeder
