@@ -1,5 +1,7 @@
 FROM node:14
 
+# FROM mongo
+
 WORKDIR /app/wave-entry-server
 
 COPY . .
