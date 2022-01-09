@@ -32,33 +32,41 @@
 #       - waveentry-backend
 
 services:
-  mongodatabase:
+  mongodb:
     image: mongo
-    # container_name: mongo
     restart: always
-    # ports:
-    #   - "27017:27017"
 
-  waveentry-backend:
-    image: wave-entry-server
-    # container_name: backend
+  backend:
+    image: waveentry-server
     environment:
-      - DB_HOST=mongodatabase
-      - DB_PORT=27017
-      - DB_NAME=waveentrydatabase
-      - SERVER_PORT=3001 # donot use 3000 here because 3000 will be used for ui
+      - DB_HOST=mongodb
+      - DB_NAME=wavedb
+      - SERVER_PORT=3001
       - JWT_SECRET=abcd1234
     ports:
-      - 3001:3001
-
+      - "3001:3001"
     depends_on:
-      - mongodatabase
+      - mongodb
 
-  waveentry-frontend:
-    image: waveentry
-    ports:
-      - 3000:3000 # 3000 is exposed from the image dockerfile
+  seeder:
+    image: waveentry-server
     environment:
-      - REACT_APP_SERVER_URL=http://localhost:3001
+      - DB_HOST=mongodb
+      - DB_NAME=wavedb
+      - SERVER_PORT=3001
+      - JWT_SECRET=abcd1234
+    command: npm run db:seed
     depends_on:
-      - waveentry-backend
+      - mongodb
+      - backend
+
+  frontend:
+    image: waveentry-web
+    environment:
+      - REACT_APP_SERVER_URL=http://0.0.0.0:3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+      - backend
+      - seeder
